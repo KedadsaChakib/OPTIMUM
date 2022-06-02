@@ -60,9 +60,9 @@ function cleardont() {
 // Le mode littérale
 function isOperand(c) {
   //Verifier si un caractère est une opérande ou pas
-  if (c.charCodeAt() >= "A".charCodeAt() && c.charCodeAt() <= "Z".charCodeAt())
+  if (c >= "A" && c <= "Z")
     return true;
-  if (c.charCodeAt() >= "a".charCodeAt() && c.charCodeAt() <= "z".charCodeAt())
+  if (c >= "a" && c <= "z")
     return true;
   return false;
 }
@@ -96,7 +96,7 @@ function traitement_algebrique1(input) {
   let input2 = input;
   if (input2.length == 0) return false;
   if (!isOperand(input.charAt(0)) && input.charAt(0) != "(") {
-    e.innerText = "Commencez avec une opérende !";
+    e.innerText = "Commencez avec un caractère alphabétique !";
     return false;
   }
   for (let i = 0; i < input2.length; i++) {
@@ -106,13 +106,17 @@ function traitement_algebrique1(input) {
           i + 1 < input2.length &&
           (!isOperator(input2.charAt(i + 1)) || input2.charAt(i + 1) == "(")
         ) {
-          if (!isOperator(input2.charAt(i + 1))) {
-            e.innerText = "Entrez un opérateur ou enlevez l'espace!";
+          if (!isOperator(input2.charAt(i + 1)) && input2.charAt(i + 1)!=" ") {
+            e.innerText = "Entrez un opérateur !";
+            return false;
+          }else if(input2.charAt(i + 1)==" "){
+            e.innerText = "L'espace est non autorisé !";
             return false;
           }
+          
 
           if (input2.charAt(i + 1) == "(") {
-            e.innerText = "Entrez un opérateur avant le parenthèse !";
+            e.innerText = "Entrez un opérateur avant la parenthèse !";
             return false;
           }
           return false;
@@ -121,16 +125,22 @@ function traitement_algebrique1(input) {
         if (i + 1 < input2.length) {
           if (
             input2.charAt(i) == "+" &&
-            !(isOperand(input2.charAt(i + 1)) || input2.charAt(i + 1) == "(")
+            !(isOperand(input2.charAt(i + 1)) || input2.charAt(i + 1) == "(" || input2.charAt(i + 1) == " ")
           ) {
-            e.innerText = "Entrez une opérande ou enlevez l'espace! !";
+            e.innerText = "Entrez un opérande !";
+            return false;
+          }else if(input2.charAt(i + 1)==" "){
+            e.innerText = "L'espace est non autorisé !";
             return false;
           }
           if (
             input2.charAt(i) == "." &&
-            !(isOperand(input2.charAt(i + 1)) || input2.charAt(i + 1) == "(")
+            !(isOperand(input2.charAt(i + 1)) || input2.charAt(i + 1) == "(" || input2.charAt(i + 1) == " ")
           ) {
-            e.innerText = "Entrez une opérande ou enlevez l'espace! !";
+            e.innerText = "Entrez un opérande !";
+            return false;
+          }else if(input2.charAt(i + 1)==" "){
+            e.innerText = "L'espace est non autorisé !";
             return false;
           }
 
@@ -138,10 +148,13 @@ function traitement_algebrique1(input) {
             input2.charAt(i) == "'" &&
             (!isOperator(input2.charAt(i + 1)) ||
               input2.charAt(i + 1) == "'" ||
-              input2.charAt(i + 1) == "(")
+              input2.charAt(i + 1) == "(") && input2.charAt(i + 1) !=" "
           ) {
-            e.innerText = "Entrez une opérande ou enlevez l'espace! !";
+            e.innerText = "Entrez un opérateur !";
 
+            return false;
+          }else if(input2.charAt(i + 1)==" "){
+            e.innerText = "L'espace est non autorisé !";
             return false;
           }
 
@@ -185,7 +198,7 @@ function traitement_algebrique1(input) {
             )
           ) {
             e.innerText =
-              "Supprimez le dernier caractère ou ajoutez une opérande !";
+              "Supprimez le dernier caractère ou ajoutez un opérande !";
             return false;
           } else if (input2.charAt(i) == ")") parentheses--;
         }
@@ -193,7 +206,7 @@ function traitement_algebrique1(input) {
     } else return false;
   }
   if (parentheses != 0) {
-    e.innerText = "Parenthèse non fermé !";
+    e.innerText = "Parenthèse non fermée !";
     return false;
   }
   return true;
@@ -201,10 +214,10 @@ function traitement_algebrique1(input) {
 //Le mode numérique
 function isNumber(c) {
   //Vérifier si un caractère est un chiffre
-  if (c.charCodeAt() >= "0".charCodeAt() && c.charCodeAt() <= "9".charCodeAt())
-    return true;
+  if (!(c >= "0" && c <= "9"))
+    return false;
 
-  return false;
+  return true;
 }
 function isSeparator(c) {
   //Vérifier si un caractère est un séparateur
@@ -216,7 +229,7 @@ function traitement_numerique(input) {
   //Le main de la vérification syntaxique numérique
   if (input == null || input.length == 0) return false;
   if (!isNumber(input.charAt(0))) {
-    e.innerText = "Commencez avec un minterm";
+    e.innerText = "Commencez avec un caractère numérique !";
     return false;
   }
   let input2 = input;
@@ -227,18 +240,26 @@ function traitement_numerique(input) {
         if (
           i + 1 < input2.length &&
           !isNumber(input2.charAt(i + 1)) &&
-          !isSeparator(input2.charAt(i + 1))
+          !isSeparator(input2.charAt(i + 1)) && input2.charAt(i + 1)!=" "
         ) {
           e.innerText = "Caractère non autorisé !";
           return false;
+        }else {
+          if(input2.charAt(i + 1)== " "){
+            e.innerText = "L'espace est non autorisé !";
+            return false;
+          }
         }
       } else {
         if (i + 1 < input2.length) {
           if (
             isSeparator(input2.charAt(i)) &&
-            !isNumber(input2.charAt(i + 1))
+            !isNumber(input2.charAt(i + 1)) && input2.charAt(i + 1)!= " "
           ) {
-            e.innerText = "Entrez un minterm !";
+            e.innerText = "Entrez un caractère numérique !";
+            return false;
+          }else if(input2.charAt(i + 1)== " "){
+            e.innerText = "L'espace est non autorisé !";
             return false;
           }
         }
@@ -486,15 +507,44 @@ window.addEventListener("DOMContentLoaded", function () {
   //mode par defaut (littérale)
   const clr = document.querySelector(".clearfunc");
   const clr2 = document.querySelector(".cleardont");
-
+  let lit=true;
+  let num=false;
   inp.addEventListener("input", () => {
     validation_algebrique(inp);
   });
   dont.addEventListener("input", () => {
     validation_algebrique(dont);
   });
+  function Get_num() {
+    var expression = document.getElementById("fonction").value;
+    var dontcare = document.getElementById("dontcare").value;
+    if (
+      (traitement_numerique(expression) && traitement_numerique(dontcare)) ||
+      (traitement_numerique(expression) && dontcare.length == 0)
+    ) {
+      
+      localStorage.setItem("fonction", expression);
+      localStorage.setItem("dontcare", dontcare);
+      location.href = "trace.html";
+      e.style.display = "none";
+    } else {
+      if (expression.length == 0) {
+        console.log("vide");
+        e.id = "errorF";
+        e.innerText = "Expression vide !";
+        e.style.display = "inline";
+      } else if (!traitement_numerique(expression)) {
+        e.id = "errorF";
+        e.style.display = "inline";
+        e.innerText = "Format non autorisé";
+      } else if (!traitement_numerique(dontcare) && dontcare.length != 0) {
+        e.id = "errorD";
+        e.style.display = "inline";
 
-  simplify.addEventListener("click", Get_lit);
+        e.innerText = "Format non autorisé";
+      }
+    }
+  }
   function Get_lit() {
     var expression = document.getElementById("fonction").value;
     var dontcare = document.getElementById("dontcare").value;
@@ -518,15 +568,23 @@ window.addEventListener("DOMContentLoaded", function () {
         e.style.display = "inline";
 
         console.log("gg");
-        e.innerText = "Dernier caractère non autorisé";
+        e.innerText = "Format non autorisé";
       } else if (!traitement_algebrique1(dontcare) && dontcare.length != 0) {
         e.id = "errorD";
         e.style.display = "inline";
 
-        e.innerText = "Dernier caractère non autorisé";
+        e.innerText = "Format non autorisé";
       }
     }
   }
+  simplify.addEventListener("click",()=>{
+    if(lit==true){
+      Get_lit();
+    }else if(num==true){
+      Get_num();
+    }
+  });
+ 
   inp.addEventListener("input", () => {
     validation_algebrique(inp);
   });
@@ -536,6 +594,8 @@ window.addEventListener("DOMContentLoaded", function () {
 
   //mode numerique
   document.getElementById("numerique").addEventListener("click", () => {
+    num=true;
+    lit=false;
     document.querySelector(".logicbtn").style.display = "none";
     document.getElementById("simplifier").style.marginLeft = "37%";
     document.getElementById("simplifier").style.width = "26%";
@@ -544,36 +604,8 @@ window.addEventListener("DOMContentLoaded", function () {
     input.style.border = "2px solid #5c38ff";
     dontc.style.border = "2px solid #5c38ff";
 
-    simplify.addEventListener("click", Get_num);
-    function Get_num() {
-      var expression = document.getElementById("fonction").value;
-      var dontcare = document.getElementById("dontcare").value;
-      if (
-        (traitement_numerique(expression) && traitement_numerique(dontcare)) ||
-        (traitement_numerique(expression) && dontcare.length == 0)
-      ) {
-        localStorage.setItem("fonction", expression);
-        localStorage.setItem("dontcare", dontcare);
-        location.href = "trace.html";
-        e.style.display = "none";
-      } else {
-        if (expression.length == 0) {
-          console.log("vide");
-          e.id = "errorF";
-          e.innerText = "Expression vide !";
-          e.style.display = "inline";
-        } else if (!traitement_numerique(expression)) {
-          e.id = "errorF";
-          e.style.display = "inline";
-          e.innerText = "Dernier caractère non autorisé";
-        } else if (!traitement_numerique(dontcare) && dontcare.length != 0) {
-          e.id = "errorD";
-          e.style.display = "inline";
-
-          e.innerText = "Dernier caractère non autorisé";
-        }
-      }
-    }
+    
+   
     inp.addEventListener("input", () => {
       validation_numerique(inp);
     });
@@ -581,7 +613,7 @@ window.addEventListener("DOMContentLoaded", function () {
       validation_numerique(dont);
     });
 
-    document.querySelector("#fonction").placeholder = "Expression numérique"; //modifier le placeholder de l'input
+    document.querySelector("#fonction").placeholder = "Expression numérique ex: 0,1,4,9"; //modifier le placeholder de l'input
     document.querySelector("#fonction").value = "";
     document.querySelector("#dontcare").value = "";
     clr.style.display = "none";
@@ -593,6 +625,8 @@ window.addEventListener("DOMContentLoaded", function () {
 
   //mode littérale
   document.getElementById("litterale").addEventListener("click", () => {
+    lit=true;
+    num=false;
     document.querySelector(".logicbtn").style.display = "inline";
     document.getElementById("simplifier").style.marginLeft = "";
     document.getElementById("simplifier").style.width = "40%";
@@ -600,39 +634,8 @@ window.addEventListener("DOMContentLoaded", function () {
     input.style.border = "2px solid #e33e5a";
     dontc.style.border = "2px solid #e33e5a";
 
-    simplify.addEventListener("click", Get_lit);
-    function Get_lit() {
-      var expression = document.getElementById("fonction").value;
-      var dontcare = document.getElementById("dontcare").value;
-      if (
-        (traitement_algebrique1(expression) &&
-          traitement_algebrique1(dontcare)) ||
-        (traitement_algebrique1(expression) && dontcare.length == 0)
-      ) {
-        localStorage.setItem("fonction", expression);
-        localStorage.setItem("dontcare", dontcare);
-        location.href = "trace.html";
-        e.style.display = "none";
-      } else {
-        if (expression.length == 0) {
-          console.log("vide");
-          e.id = "errorF";
-          e.innerText = "Expression vide !";
-          e.style.display = "inline";
-        } else if (!traitement_algebrique1(expression)) {
-          e.id = "errorF";
-          e.style.display = "inline";
-
-          console.log("gg");
-          e.innerText = "Dernier caractère non autorisé";
-        } else if (!traitement_algebrique1(dontcare) && dontcare.length != 0) {
-          e.id = "errorD";
-          e.style.display = "inline";
-
-          e.innerText = "Dernier caractère non autorisé";
-        }
-      }
-    }
+    
+   
     inp.addEventListener("input", () => {
       validation_algebrique(inp);
     });
@@ -640,7 +643,7 @@ window.addEventListener("DOMContentLoaded", function () {
       validation_algebrique(dont);
     });
 
-    document.querySelector("#fonction").placeholder = "Expression littérale";
+    document.querySelector("#fonction").placeholder = "Expression littérale ex: (A'+B)'.C";
     document.querySelector("#fonction").value = "";
     document.querySelector("#dontcare").value = "";
     clr.style.display = "none";

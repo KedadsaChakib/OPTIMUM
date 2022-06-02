@@ -154,3 +154,12 @@ path.two {
 a{
     text-decoration: none;
 }
+
+@media screen and (max-width: 600px) {
+    span{
+        font-size: 20px;
+    }
+    #bouton{
+        font-size: 12px;
+    }
+}

@@ -379,6 +379,7 @@ i {
 }
 
 @media screen and (max-width: 600px) {
+  
   a {
     font-size: 12px;
   }
@@ -426,7 +427,7 @@ i {
 
   #main {
     width: 100%;
-    margin: 10% 0;
+    margin: 25% 0;
   }
   .h5num {
     font-size: 16px;
@@ -438,6 +439,48 @@ i {
     left: 0%;
     right: 0;
   }
+  .choix {
+    position: relative;
+    top: 0px;
+    bottom: 10px;
+    width: 53%;
+    height: 40px;
+    left: 12%;
+    border: 0;
+    padding: 0.5%;
+    background: rgba(227, 62, 90, 0.3);
+    border-radius: 5px;
+  }
+  .logic {
+    width: 19% !important ; 
+    font-size: 3vw !important;
+    border-radius: 10px !important;
+  }
+  #simplifier {
+    font-size: 3.5vw !important;
+  }
+  #errorF {
+    font-size: 3vw;
+    font-weight: 500;
+    font-family: "Comfortaa";
+    font-style: medium;
+    color: red;
+    left: 70%;
+    top: 15%;
+    position: absolute;
+  }
+  #errorD {
+    font-size: 3vw;
+    font-weight: 500;
+    font-family: "Comfortaa";
+    font-style: medium;
+    color: red;
+    left: 70%;
+    top: 45%;
+    position: absolute;
+  }
+  
+  
 }
 @media (min-width: 1540px) {
   #main {
